@@ -1,0 +1,16 @@
+[versions]
+libgdx-version = "1.13.0"
+graalvm-helper-version = "2.0.1"
+graalvm-buildtools-plugin-version = "0.10.4"
+construo-plugin-version = "1.5.1"
+
+[libraries]
+libgdx-api = { module = "com.badlogicgames.gdx:gdx", version.ref = "libgdx-version" }
+libgdx-lwjgl3 = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "libgdx-version" }
+libgdx-platform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "libgdx-version" }
+graal-helper-lwjgl3 = { module = "io.github.berstanio:gdx-svmhelper-backend-lwjgl3", version.ref = "graalvm-helper-version" }
+graal-helper-annotations = { module = "io.github.berstanio:gdx-svmhelper-annotations", version.ref = "graalvm-helper-version" }
+
+[plugins]
+graalvm = { id = "org.graalvm.buildtools.native", version.ref = "graalvm-buildtools-plugin-version" }
+construo = { id = "io.github.fourlastor.construo", version.ref = "construo-plugin-version" }
