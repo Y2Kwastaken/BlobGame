@@ -1,9 +1,8 @@
 package sh.miles.algidle.computer;
 
-import sh.miles.algidle.math.BigMath;
+import sh.miles.algidle.utils.math.BigMath;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.function.Function;
 
 public enum BigO {

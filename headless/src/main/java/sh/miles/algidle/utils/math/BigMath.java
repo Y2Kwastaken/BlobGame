@@ -1,4 +1,4 @@
-package sh.miles.algidle.math;
+package sh.miles.algidle.utils.math;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;

@@ -1,8 +1,6 @@
 package sh.miles.algidle.computer;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.function.Function;
 

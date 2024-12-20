@@ -21,6 +21,7 @@ dependencies {
     implementation(libs.libgdx.lwjgl3)
     implementation(variantOf(libs.libgdx.platform) { classifier("natives-desktop") })
     implementation(libs.guava)
+    implementation(libs.jspecify)
     implementation(project(":user_interface"))
     implementation(project(":headless"))
 
