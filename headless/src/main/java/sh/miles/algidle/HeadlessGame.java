@@ -4,7 +4,7 @@ import sh.miles.algidle.utils.Ticking;
 
 public class HeadlessGame implements Runnable, Ticking {
 
-    public static final double TICKS_PER_SECOND = 100.0;
+    public static final double TICKS_PER_SECOND = 50.0;
     public static final double NANO_CONSTANT = 1000000000.0;
     public static final boolean SHOW_TPS = true;
 

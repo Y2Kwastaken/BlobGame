@@ -1,24 +1,33 @@
 package sh.miles.algidle.computer;
 
-import sh.miles.algidle.utils.ExtendedMath;
+import sh.miles.algidle.math.BigMath;
 
+import java.math.BigInteger;
 import java.util.function.Function;
 
 public enum BigO {
-    CONSTANT("O(1)", (Integer value) -> 1),
-    LOGN("O(log n)", (Integer value) -> (int) Math.log(value)),
-    LINEAR("O(n)", (Integer value) -> value),
-    NLOGN("O(nlog n", (Integer value) -> value*((int) Math.log(value))),
-    NSQUARED("O(n^2)", (Integer value) -> (int) Math.pow(value, 2)),
-    TWON("O(2^n)", (Integer value) -> (int) Math.pow(2, value)),
-    NFACTORIAL("O(n!)", (Integer value) -> ExtendedMath.factorial(value));
+    CONSTANT("O(1)", (BigInteger value) -> BigInteger.ONE),
+    LOG_N("O(log n)", BigMath::log2),
+    LINEAR("O(n)", (BigInteger value) -> value),
+    N_LOG_N("O(nlog n", (BigInteger value) -> value.multiply(BigMath.log2(value))),
+    N_SQUARED("O(n^2)", (BigInteger value) -> value.pow(2)),
+    N_CUBED("O(n^3)", (BigInteger value) -> value.pow(3)),
+    TWO_N("O(2^n)", (BigInteger value) -> BigInteger.TWO.pow(value.intValue())),
+    FACTORIAL("O(n!)", BigMath::factorial);
 
     private final String name;
-    private final Function<Integer, Integer> operation;
+    private final Function<BigInteger, BigInteger> operation;
 
-
-    BigO(String name, Function<Integer, Integer> operation) {
+    BigO(String name, Function<BigInteger, BigInteger> operation) {
         this.name = name;
         this.operation = operation;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public BigInteger operate(final BigInteger number) {
+        return this.operation.apply(number);
     }
 }

@@ -1,10 +1,12 @@
 [versions]
+guava-version = "33.4.0-jre"
 libgdx-version = "1.13.0"
 graalvm-helper-version = "2.0.1"
 graalvm-buildtools-plugin-version = "0.10.4"
 construo-plugin-version = "1.5.1"
 
 [libraries]
+guava = { module = "com.google.guava:guava", version.ref = "guava-version" }
 libgdx-api = { module = "com.badlogicgames.gdx:gdx", version.ref = "libgdx-version" }
 libgdx-lwjgl3 = { module = "com.badlogicgames.gdx:gdx-backend-lwjgl3", version.ref = "libgdx-version" }
 libgdx-platform = { module = "com.badlogicgames.gdx:gdx-platform", version.ref = "libgdx-version" }
