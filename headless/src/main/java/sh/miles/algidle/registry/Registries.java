@@ -3,7 +3,10 @@ package sh.miles.algidle.registry;
 import sh.miles.algidle.computer.Algorithm;
 import sh.miles.algidle.computer.Algorithms;
 import sh.miles.algidle.computer.BigO;
+import sh.miles.algidle.computer.Computer;
 import sh.miles.algidle.utils.collection.registry.Registry;
+
+import java.math.BigDecimal;
 
 public class Registries {
 
@@ -17,6 +20,7 @@ public class Registries {
 
 
     public static void main(String[] args) {
-        final Algorithm algorithm = Registries.ALGORITHMS.get(Algorithms.DATA_SORT).unwrap();
+        final Algorithm algorithm = Registries.ALGORITHMS.get(Algorithms.TRAVELING_SALESMAN_PROBLEM).unwrap();
+        System.out.println(algorithm.runtime().compute(BigDecimal.ONE, Computer.CONSTANT, algorithm.maxComplexity()));
     }
 }

@@ -30,4 +30,6 @@ public enum BigO {
     public BigDecimal operate(final BigDecimal number) {
         return this.operation.apply(number);
     }
+
+
 }
