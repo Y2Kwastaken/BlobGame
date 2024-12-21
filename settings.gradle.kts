@@ -5,7 +5,8 @@ gradle.rootProject {
 }
 
 include(
+    "graphics",
+    "graphicscli",
     "headless",
-    "user_interface",
     "lwjgl3",
 )

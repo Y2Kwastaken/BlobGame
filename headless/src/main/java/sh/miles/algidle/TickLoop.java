@@ -1,20 +1,18 @@
 package sh.miles.algidle;
 
-import sh.miles.algidle.computer.Algorithms;
-import sh.miles.algidle.computer.Computer;
-import sh.miles.algidle.registry.Registries;
+import sh.miles.algidle.entity.Player;
 import sh.miles.algidle.utils.Ticking;
 
 public class TickLoop implements Ticking {
 
-    private final Computer computer;
+    public final Player player;
 
     TickLoop() {
-        computer = new Computer(Registries.ALGORITHMS.get(Algorithms.DATA_SEARCH).unwrap());
+        this.player = new Player();
     }
 
     @Override
     public void tick() {
-        computer.tick();
+        player.tick();
     }
 }

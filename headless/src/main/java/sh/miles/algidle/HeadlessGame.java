@@ -4,13 +4,14 @@ public class HeadlessGame implements Runnable {
 
     public static final double TICKS_PER_SECOND = 50.0;
     public static final double NANO_CONSTANT = 1000000000.0;
-    public static final boolean SHOW_TPS = true;
+    public static final boolean SHOW_TPS = false;
 
-    private static final HeadlessGame GAME = new HeadlessGame();
+    public static final HeadlessGame GAME = new HeadlessGame();
 
-    private final TickLoop tickLoop;
     private final Thread gameThread;
+    public final TickLoop tickLoop;
     public volatile boolean running = true;
+    public volatile long lastTps = -1;
 
     private HeadlessGame() {
         this.gameThread = new Thread(this);
@@ -43,6 +44,7 @@ public class HeadlessGame implements Runnable {
                 if (SHOW_TPS) {
                     System.out.println("TPS: " + ticks);
                 }
+                lastTps = ticks;
                 timer += 1000;
                 ticks = 0;
             }

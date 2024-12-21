@@ -22,7 +22,7 @@ dependencies {
     implementation(variantOf(libs.libgdx.platform) { classifier("natives-desktop") })
     implementation(libs.guava)
     implementation(libs.jspecify)
-    implementation(project(":user_interface"))
+    implementation(project(":graphics"))
     implementation(project(":headless"))
 
     if (properties["enableGraalNative"] == "true") implementation(libs.graal.helper.lwjgl3)

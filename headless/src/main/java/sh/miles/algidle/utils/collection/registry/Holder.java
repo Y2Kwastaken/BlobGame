@@ -61,6 +61,10 @@ public class Holder<E> {
         return this.key.equals(key);
     }
 
+    public boolean isPresent() {
+        return this.value != null;
+    }
+
     /**
      * Maps this Holder to an {@link Option} given the mapping function. If the value of this holder is null a None
      * option is returned.
