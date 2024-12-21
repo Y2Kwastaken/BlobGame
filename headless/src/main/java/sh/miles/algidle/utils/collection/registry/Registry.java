@@ -5,6 +5,7 @@ import org.jspecify.annotations.NullMarked;
 import sh.miles.algidle.utils.collection.registry.exception.RegistryLifecycleOperationException;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * Represents a registry that can have entries within it
@@ -88,6 +89,17 @@ public class Registry<E> {
             throw new RegistryLifecycleOperationException(this.lifecycle, RegistryLifecycle.ALLOW_ADDITIONS, "lifecycle change", getClass());
         }
         this.lifecycle = lifecycle;
+    }
+
+    public static <E> Registry<E> create() {
+        return new Registry<>(RegistryLifecycle.BOOTSTRAP);
+    }
+
+    public static <E> Registry<E> bootstrap(Consumer<Registry<E>> bootstrap, RegistryLifecycle finalizedState) {
+        final var registry = new Registry<E>(RegistryLifecycle.BOOTSTRAP);
+        bootstrap.accept(registry);
+        registry.lifecycle(finalizedState);
+        return registry;
     }
 
     public enum RegistryLifecycle {

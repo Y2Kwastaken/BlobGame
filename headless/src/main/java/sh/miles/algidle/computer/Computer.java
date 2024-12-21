@@ -1,19 +1,25 @@
 package sh.miles.algidle.computer;
 
-public record Computer(String string, Equation equation, int constant, BigO timeComplexity) {
-    public Computer withName(String string) {
-        return new Computer(string, equation, constant, timeComplexity);
+import org.jspecify.annotations.NullMarked;
+
+/**
+ * Algorithm Algorithm constant Algorithm level Algorithm Time Takes // refresh this every time an upgrade is applied to
+ * the computer Computer level Random (a, b) -> variance on time
+ */
+@NullMarked
+public class Computer {
+    private final Algorithm algorithm;
+    private int algorithmLevel;
+    private int constant;
+    private int computerLevel;
+    private int processTime; // ms
+
+    public Computer(final Algorithm algorithm) {
+        this.algorithm = algorithm;
+        this.algorithmLevel = 1;
+        this.computerLevel = 1;
+        this.processTime = -1;
     }
 
-    public Computer withEquation(Equation equation) {
-        return new Computer(string, equation, constant, timeComplexity);
-    }
 
-    public Computer withConstant(int constant) {
-        return new Computer(string, equation, constant, timeComplexity);
-    }
-
-    public Computer withTimeComplexity(BigO timeComplexity) {
-        return new Computer(string, equation, constant, timeComplexity);
-    }
 }
