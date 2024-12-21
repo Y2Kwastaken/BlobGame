@@ -1,8 +1,6 @@
 package sh.miles.algidle;
 
-import sh.miles.algidle.utils.Ticking;
-
-public class HeadlessGame implements Runnable, Ticking {
+public class HeadlessGame implements Runnable {
 
     public static final double TICKS_PER_SECOND = 50.0;
     public static final double NANO_CONSTANT = 1000000000.0;
@@ -10,20 +8,17 @@ public class HeadlessGame implements Runnable, Ticking {
 
     private static final HeadlessGame GAME = new HeadlessGame();
 
-    private Thread gameThread;
+    private final TickLoop tickLoop;
+    private final Thread gameThread;
     public volatile boolean running = true;
 
     private HeadlessGame() {
         this.gameThread = new Thread(this);
+        this.tickLoop = new TickLoop();
     }
 
     public void start() {
         this.gameThread.start();
-    }
-
-    @Override
-    public void tick() {
-
     }
 
     @Override
@@ -39,7 +34,7 @@ public class HeadlessGame implements Runnable, Ticking {
             delta += (now - lastTime) / ns;
             lastTime = now;
             while (delta >= 1) {
-                tick();
+                this.tickLoop.tick();
                 ticks++;
                 delta--;
             }
