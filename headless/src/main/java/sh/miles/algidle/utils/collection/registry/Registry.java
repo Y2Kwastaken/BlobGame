@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import org.jspecify.annotations.NullMarked;
 import sh.miles.algidle.utils.collection.registry.exception.RegistryLifecycleOperationException;
 
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -13,7 +15,7 @@ import java.util.function.Consumer;
  * @param <E> the type of the registry
  */
 @NullMarked
-public class Registry<E> {
+public class Registry<E> implements Iterable<E> {
 
     private final ConcurrentHashMap<RegistryKey, E> values;
     private RegistryLifecycle lifecycle;
@@ -91,6 +93,15 @@ public class Registry<E> {
         this.lifecycle = lifecycle;
     }
 
+    /**
+     * Gets the all keys of this registry
+     *
+     * @return the keys
+     */
+    public Set<RegistryKey> keySet() {
+        return this.values.keySet();
+    }
+
     public static <E> Registry<E> create() {
         return new Registry<>(RegistryLifecycle.BOOTSTRAP);
     }
@@ -100,6 +111,11 @@ public class Registry<E> {
         bootstrap.accept(registry);
         registry.lifecycle(finalizedState);
         return registry;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return this.values.values().iterator();
     }
 
     public enum RegistryLifecycle {

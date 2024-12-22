@@ -5,9 +5,13 @@ import sh.miles.algidle.command.Command;
 import sh.miles.algidle.computer.Algorithm;
 import sh.miles.algidle.computer.Computer;
 import sh.miles.algidle.entity.Player;
+import sh.miles.algidle.registry.BuiltInRegistries;
 import sh.miles.algidle.registry.Registries;
 import sh.miles.algidle.utils.collection.registry.Holder;
+import sh.miles.algidle.utils.collection.registry.Registry;
 import sh.miles.algidle.utils.collection.registry.RegistryKey;
+
+import java.util.stream.Collectors;
 
 @NullMarked
 public class ComputerCommand implements Command {
@@ -19,9 +23,12 @@ public class ComputerCommand implements Command {
         }
 
         final String function = arguments[0];
-        final Holder<Algorithm> holder = Registries.ALGORITHMS.get(RegistryKey.base(arguments[1]));
+        final Registry<Algorithm> registry = Registries.getOrThrow(Registries.ALGORITHMS);
+        final Holder<Algorithm> holder = registry.get(RegistryKey.base(arguments[1]));
         if (!holder.isPresent()) {
             System.out.println("Invalid algorithm " + arguments[1]);
+            System.out.println("Valid Algorithms " + registry.keySet().stream().map(RegistryKey::location).collect(Collectors.joining(",")));
+            return;
         }
         final Algorithm algorithm = holder.unwrap();
 
@@ -60,8 +67,7 @@ public class ComputerCommand implements Command {
                         computer.upgradeComputer(amount);
                         System.out.printf("Upgraded %s computer by %d%n", computer.getAlgorithm().name(), amount);
                     }
-                }
-                else if (arguments[3].equals("algorithm")) {
+                } else if (arguments[3].equals("algorithm")) {
                     for (final Computer computer : player.getComputers(algorithm)) {
                         System.out.println(computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity(), amount));
                         if (player.getBalance().compareTo(computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity(), amount)) < 0) {
