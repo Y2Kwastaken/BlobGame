@@ -49,9 +49,9 @@ public class ComputerCommand implements Command {
                 amount = Integer.parseInt(arguments[2]);
                 if (arguments[3].equals("computer")) {
                     for (final Computer computer : player.getComputers(algorithm)) {
-                        System.out.println(computer.getComputerUpgradeCost(computer.getComputerLevel(), computer.getTimeComplexity()));
-                        if (player.getBalance().compareTo(computer.getComputerUpgradeCost(computer.getComputerLevel(), computer.getTimeComplexity())) < 0) {
-                            System.out.println("Not enough money to upgrade" + "\n" + "You have (" + player.getBalance() + ") and the computer upgrade costs (" + computer.getComputerUpgradeCost(computer.getComputerLevel(), computer.getTimeComplexity()) + ")");
+                        System.out.println(computer.getComputerUpgradeCost(computer.getComputerLevel(), computer.getTimeComplexity(), amount));
+                        if (player.getBalance().compareTo(computer.getComputerUpgradeCost(computer.getComputerLevel(), computer.getTimeComplexity(), amount)) < 0) {
+                            System.out.println("Not enough money to upgrade" + "\n" + "You have (" + player.getBalance() + ") and the computer upgrade costs (" + computer.getComputerUpgradeCost(computer.getComputerLevel(), computer.getTimeComplexity(), amount) + ")");
                             return;
                         }
                     }
@@ -63,9 +63,9 @@ public class ComputerCommand implements Command {
                 }
                 else if (arguments[3].equals("algorithm")) {
                     for (final Computer computer : player.getComputers(algorithm)) {
-                        System.out.println(computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity()));
-                        if (player.getBalance().compareTo(computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity())) < 0) {
-                            System.out.println("Not enough money to upgrade" + "\n" + "You have (" + player.getBalance() + ") and the computer upgrade costs (" + computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity()) + ")");
+                        System.out.println(computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity(), amount));
+                        if (player.getBalance().compareTo(computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity(), amount)) < 0) {
+                            System.out.println("Not enough money to upgrade" + "\n" + "You have (" + player.getBalance() + ") and the computer upgrade costs (" + computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity(), amount) + ")");
                             return;
                         }
                     }

@@ -4,8 +4,10 @@ import org.jspecify.annotations.NullMarked;
 import sh.miles.algidle.entity.Player;
 import sh.miles.algidle.utils.Ticking;
 import sh.miles.algidle.utils.TimeUtils;
+import sh.miles.algidle.utils.math.BigMath;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Objects;
 
 /**
@@ -24,6 +26,9 @@ public class Computer implements Ticking {
     private BigO timeComplexity;
 
     private int ticked = 0;
+    private int counter = 0;
+    private double temp = 0;
+    private double timeElapsed = 0;
 
     public Computer(final Algorithm algorithm, final Player owner) {
         this.algorithm = algorithm;
@@ -41,22 +46,27 @@ public class Computer implements Ticking {
 
     public void upgradeComputer(int amount) {
         this.computerLevel = computerLevel + amount;
-        // make a function to change processtime with new comp level
-        this.processTime = TimeUtils.milliSecondsToTicks(this.algorithm.runtime().compute(this.algorithmLevel, CONSTANT, this.timeComplexity));
+        // process time changes by: ProcessTime*(1-computerlevel/100)
+        this.processTime = TimeUtils.milliSecondsToTicks(this.algorithm.runtime().compute(this.algorithmLevel, CONSTANT, this.timeComplexity).multiply(BigDecimal.ONE.subtract(BigDecimal.valueOf(amount).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP))));
     }
-
-    public BigDecimal getComputerUpgradeCost(int computerLevel, BigO timeFunction) {
-        // update function to depend on amount of upgrades wishing to be purchased
-        return BigDecimal.valueOf(Math.pow(Math.E, computerLevel)).multiply(timeFunction.operate(BigDecimal.valueOf(computerLevel)));
+    public BigDecimal getComputerUpgradeCost(int computerLevel, BigO timeFunction, int amount) {
+        BigDecimal cost = BigDecimal.ZERO;
+        for (int i = 0; i < amount; i++) {
+            cost = cost.add(BigDecimal.valueOf(Math.pow(Math.E, computerLevel+i)).multiply(timeFunction.operate(BigDecimal.valueOf(computerLevel))));
+        }
+        return cost.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
     }
-
-    public BigDecimal getAlgorithmUpgradeCost(BigDecimal algorithmLevel, BigO timeFunction) {
-        // change this function
-        return BigDecimal.valueOf(Math.pow(Math.E, algorithmLevel.doubleValue())).multiply(timeFunction.operate(BigDecimal.valueOf(computerLevel)));
+    // change this function
+    public BigDecimal getAlgorithmUpgradeCost(BigDecimal algorithmLevel, BigO timeFunction, int amount) {
+        BigDecimal cost = BigDecimal.ZERO;
+        for (int i = 0; i < amount; i++) {
+            cost = cost.add(BigDecimal.valueOf(Math.pow(Math.E, algorithmLevel.doubleValue()+i)).multiply(timeFunction.operate(BigDecimal.valueOf(computerLevel))));
+        }
+        return cost.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
     }
-
+    // change the power of 10^x, dependent on the type of algorithm
     private BigDecimal amountBalanceIncrease(BigO timeFunction, Algorithm algorithm, BigDecimal algorithmLevel, int computerLevel) {
-        return timeFunction.operate(algorithmLevel).multiply(BigDecimal.valueOf(algorithm.algorithmMult())).multiply(BigDecimal.valueOf(computerLevel));
+        return timeFunction.operate(algorithmLevel).multiply(BigDecimal.valueOf(algorithm.algorithmMult())).multiply(BigDecimal.valueOf(computerLevel)).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
     }
 
     @Override
@@ -66,9 +76,19 @@ public class Computer implements Ticking {
         if (ticked % processTime != 0) {
             return;
         }
-
+        counter += 1;
         this.owner.incrementBalance(amountBalanceIncrease(getTimeComplexity(), getAlgorithm(), getAlgorithmLevel(), getComputerLevel()).doubleValue());
+        temp += amountBalanceIncrease(getTimeComplexity(), getAlgorithm(), getAlgorithmLevel(), getComputerLevel()).doubleValue();
+        timeElapsed += TimeUtils.ticksToSeconds(this.processTime).doubleValue();
         ticked = 0;
+        if (counter % 10 != 0 ) {
+            return;
+        }
+        System.out.printf("You have made %s in %s seconds%n", BigMath.round(temp,4), BigMath.round(timeElapsed, 4));
+        System.out.printf("You are making %s per second", BigMath.round(temp,4)/BigMath.round(timeElapsed, 4));
+        counter = 0;
+        temp = 0;
+        timeElapsed = 0;
     }
 
     public Player getOwner() {

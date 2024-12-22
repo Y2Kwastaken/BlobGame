@@ -5,7 +5,7 @@ import java.math.RoundingMode;
 
 public final class TimeUtils {
 
-    public static int TICKS_PER_MILLISECOND = 50;
+    public static int TICKS_PER_SECOND = 50;
     public static int MILLISECONDS_PER_TICK = 2;
 
     public static int milliSecondsToTicks(BigDecimal milliseconds) {
@@ -13,6 +13,10 @@ public final class TimeUtils {
     }
 
     public static BigDecimal ticksToMilliseconds(int ticks) {
-        return BigDecimal.valueOf((long) ticks * TICKS_PER_MILLISECOND);
+        return BigDecimal.valueOf((double) ticks * 100 / TICKS_PER_SECOND);
+    }
+
+    public static BigDecimal ticksToSeconds(int ticks) {
+        return BigDecimal.valueOf((double) ticks / TICKS_PER_SECOND);
     }
 }
