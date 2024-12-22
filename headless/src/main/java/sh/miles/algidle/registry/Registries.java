@@ -1,26 +1,30 @@
 package sh.miles.algidle.registry;
 
-import sh.miles.algidle.computer.Algorithm;
-import sh.miles.algidle.computer.Algorithms;
-import sh.miles.algidle.computer.BigO;
-import sh.miles.algidle.computer.Computer;
+import com.google.common.base.Preconditions;
+import sh.miles.algidle.utils.collection.registry.Holder;
 import sh.miles.algidle.utils.collection.registry.Registry;
+import sh.miles.algidle.utils.collection.registry.RegistryKey;
 
-import java.math.BigDecimal;
+public final class Registries {
 
-public class Registries {
+    public static final RegistryKey ALGORITHMS = RegistryKey.base("algorithms");
 
-    public static final Registry<Algorithm> ALGORITHMS = Registry.bootstrap((registry) -> {
-        registry.register(Algorithms.DATA_SEARCH, new Algorithm("Data Search", BigO.LOG_N, BigO.FACTORIAL, 1.0));
-        registry.register(Algorithms.DATA_SORT, new Algorithm("Data Sort", BigO.N_LOG_N, BigO.FACTORIAL, 2.0));
-        registry.register(Algorithms.FFT, new Algorithm("Fast Fourier Transformation", BigO.N_LOG_N, BigO.FACTORIAL, 3.0));
-        registry.register(Algorithms.DFT, new Algorithm("Discrete Fourier Transformation", BigO.N_LOG_N, BigO.FACTORIAL, 4.0));
-        registry.register(Algorithms.TRAVELING_SALESMAN_PROBLEM, new Algorithm("Traveling Salesman Problem", BigO.N_SQUARED, BigO.FACTORIAL, 5.0));
+    private static final Registry<Registry<?>> REGISTRIES = Registry.bootstrap((registry) -> {
+        registry.register(Registries.ALGORITHMS, BuiltInRegistries.ALGORITHMS);
     }, Registry.RegistryLifecycle.ALLOW_ADDITIONS);
 
 
-    public static void main(String[] args) {
-        final Algorithm algorithm = Registries.ALGORITHMS.get(Algorithms.TRAVELING_SALESMAN_PROBLEM).unwrap();
-        System.out.println(algorithm.runtime().compute(BigDecimal.ONE, Computer.CONSTANT, algorithm.maxComplexity()));
+    public static <E> Holder<Registry<E>> get(RegistryKey key) {
+        Preconditions.checkArgument(key != null, "The given key must not be null");
+
+        return (Holder<Registry<E>>) (Object) REGISTRIES.get(key);
+    }
+
+    public static <E> Registry<E> getOrThrow(RegistryKey key) {
+        return (Registry<E>) get(key).unwrap();
+    }
+
+    public static void freeze() {
+        REGISTRIES.forEach((registry) -> registry.lifecycle(Registry.RegistryLifecycle.FROZEN));
     }
 }

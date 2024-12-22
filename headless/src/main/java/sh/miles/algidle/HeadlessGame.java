@@ -1,5 +1,9 @@
 package sh.miles.algidle;
 
+import sh.miles.algidle.registry.BuiltInRegistries;
+import sh.miles.algidle.registry.Registries;
+import sh.miles.algidle.utils.collection.registry.Registry;
+
 public class HeadlessGame implements Runnable {
 
     public static final double TICKS_PER_SECOND = 50.0;
@@ -20,6 +24,7 @@ public class HeadlessGame implements Runnable {
 
     public void start() {
         this.gameThread.start();
+        Registries.freeze();
     }
 
     @Override
@@ -49,9 +54,5 @@ public class HeadlessGame implements Runnable {
                 ticks = 0;
             }
         }
-    }
-
-    public static void main(String[] args) {
-        HeadlessGame.GAME.start();
     }
 }
