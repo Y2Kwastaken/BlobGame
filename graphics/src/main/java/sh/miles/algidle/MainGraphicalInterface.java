@@ -1,34 +1,31 @@
 package sh.miles.algidle;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
+import sh.miles.algidle.assets.Screens;
+import sh.miles.algidle.registry.Registries;
 
-/**
- * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
- */
 public class MainGraphicalInterface extends Game {
+
+    private static MainGraphicalInterface INSTANCE;
+    public static SpriteBatch BATCH;
 
     private SpriteBatch batch;
     private Texture image;
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
+        INSTANCE = this;
+        BATCH = new SpriteBatch();
         image = new Texture("libgdx.png");
+        AssetRegistries.initialize();
+
+        setScreen((Screen) Registries.getOrThrow(AssetRegistries.SCREENS).get(Screens.LOADING).unwrap());
     }
 
-    @Override
-    public void render() {
-        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-        batch.begin();
-        batch.end();
-    }
-
-    @Override
-    public void dispose() {
-        batch.dispose();
-        image.dispose();
+    public static void setCurrentScreen(Screen screen) {
+        INSTANCE.setScreen(screen);
     }
 }

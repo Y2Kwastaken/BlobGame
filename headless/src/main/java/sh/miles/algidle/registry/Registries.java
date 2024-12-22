@@ -9,7 +9,7 @@ public final class Registries {
 
     public static final RegistryKey ALGORITHMS = RegistryKey.base("algorithms");
 
-    private static final Registry<Registry<?>> REGISTRIES = Registry.bootstrap((registry) -> {
+    public static final Registry<Registry<?>> REGISTRIES = Registry.bootstrap((registry) -> {
         registry.register(Registries.ALGORITHMS, BuiltInRegistries.ALGORITHMS);
     }, Registry.RegistryLifecycle.ALLOW_ADDITIONS);
 
