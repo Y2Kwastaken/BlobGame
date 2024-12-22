@@ -39,6 +39,26 @@ public class Computer implements Ticking {
         this.processTime = TimeUtils.milliSecondsToTicks(this.algorithm.runtime().compute(this.algorithmLevel, CONSTANT, this.timeComplexity));
     }
 
+    public void upgradeComputer(int amount) {
+        this.computerLevel = computerLevel + amount;
+        // make a function to change processtime with new comp level
+        this.processTime = TimeUtils.milliSecondsToTicks(this.algorithm.runtime().compute(this.algorithmLevel, CONSTANT, this.timeComplexity));
+    }
+
+    public BigDecimal getComputerUpgradeCost(int computerLevel, BigO timeFunction) {
+        // update function to depend on amount of upgrades wishing to be purchased
+        return BigDecimal.valueOf(Math.pow(Math.E, computerLevel)).multiply(timeFunction.operate(BigDecimal.valueOf(computerLevel)));
+    }
+
+    public BigDecimal getAlgorithmUpgradeCost(BigDecimal algorithmLevel, BigO timeFunction) {
+        // change this function
+        return BigDecimal.valueOf(Math.pow(Math.E, algorithmLevel.doubleValue())).multiply(timeFunction.operate(BigDecimal.valueOf(computerLevel)));
+    }
+
+    private BigDecimal amountBalanceIncrease(BigO timeFunction, Algorithm algorithm, BigDecimal algorithmLevel, int computerLevel) {
+        return timeFunction.operate(algorithmLevel).multiply(BigDecimal.valueOf(algorithm.algorithmMult())).multiply(BigDecimal.valueOf(computerLevel));
+    }
+
     @Override
     public void tick() {
         ticked++;
@@ -47,7 +67,7 @@ public class Computer implements Ticking {
             return;
         }
 
-        this.owner.incrementBalance(1.0);
+        this.owner.incrementBalance(amountBalanceIncrease(getTimeComplexity(), getAlgorithm(), getAlgorithmLevel(), getComputerLevel()).doubleValue());
         ticked = 0;
     }
 
@@ -58,6 +78,12 @@ public class Computer implements Ticking {
     public Algorithm getAlgorithm() {
         return algorithm;
     }
+
+    public BigO getTimeComplexity() { return timeComplexity;}
+
+    public int getComputerLevel() { return computerLevel;}
+
+    public BigDecimal getAlgorithmLevel() { return algorithmLevel;}
 
     @Override
     public boolean equals(final Object o) {

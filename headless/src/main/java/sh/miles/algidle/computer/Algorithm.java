@@ -5,10 +5,10 @@ import org.jspecify.annotations.NullMarked;
 import java.math.BigDecimal;
 
 @NullMarked
-public record Algorithm(String name, BigO minComplexity, BigO maxComplexity, AlgorithmRuntime runtime) {
+public record Algorithm(String name, BigO minComplexity, BigO maxComplexity, AlgorithmRuntime runtime, double algorithmMult) {
 
-    public Algorithm(String name, BigO minComplexity, BigO maxComplexity) {
-        this(name, minComplexity, maxComplexity, AlgorithmRuntime.BASE);
+    public Algorithm(String name, BigO minComplexity, BigO maxComplexity, double algorithmMult) {
+        this(name, minComplexity, maxComplexity, AlgorithmRuntime.BASE, algorithmMult);
     }
 
     @FunctionalInterface

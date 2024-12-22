@@ -14,7 +14,7 @@ public class ComputerCommand implements Command {
     @Override
     public void execute(final Player player, final String name, final String[] arguments) {
         if (arguments.length < 2) {
-            System.out.println("computer <add:remove:peek:upgrade> <algorithm>");
+            System.out.println("computer <add:remove:peek:upgrade> <algorithm> <:::amount>");
             return;
         }
 
@@ -41,15 +41,42 @@ public class ComputerCommand implements Command {
                 System.out.println("==================================================");
             }
             case "upgrade" -> {
-                var amount = 1;
-                if (arguments.length == 3) {
-                    amount = Integer.parseInt(arguments[2]);
+                if (arguments.length < 4) {
+                    System.out.println("computer <upgrade> <algorithm> <amount> <computer:algorithm>");
+                    return;
                 }
-                for (final Computer computer : player.getComputers(algorithm)) {
-                    computer.upgradeAlgorithm(amount);
-                    System.out.printf("Upgraded %s computer by %d%n", computer.getAlgorithm().name(), amount);
+                var amount = 1;
+                amount = Integer.parseInt(arguments[2]);
+                if (arguments[3].equals("computer")) {
+                    for (final Computer computer : player.getComputers(algorithm)) {
+                        System.out.println(computer.getComputerUpgradeCost(computer.getComputerLevel(), computer.getTimeComplexity()));
+                        if (player.getBalance().compareTo(computer.getComputerUpgradeCost(computer.getComputerLevel(), computer.getTimeComplexity())) < 0) {
+                            System.out.println("Not enough money to upgrade" + "\n" + "You have (" + player.getBalance() + ") and the computer upgrade costs (" + computer.getComputerUpgradeCost(computer.getComputerLevel(), computer.getTimeComplexity()) + ")");
+                            return;
+                        }
+                    }
+
+                    for (final Computer computer : player.getComputers(algorithm)) {
+                        computer.upgradeComputer(amount);
+                        System.out.printf("Upgraded %s computer by %d%n", computer.getAlgorithm().name(), amount);
+                    }
+                }
+                else if (arguments[3].equals("algorithm")) {
+                    for (final Computer computer : player.getComputers(algorithm)) {
+                        System.out.println(computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity()));
+                        if (player.getBalance().compareTo(computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity())) < 0) {
+                            System.out.println("Not enough money to upgrade" + "\n" + "You have (" + player.getBalance() + ") and the computer upgrade costs (" + computer.getAlgorithmUpgradeCost(computer.getAlgorithmLevel(), computer.getTimeComplexity()) + ")");
+                            return;
+                        }
+                    }
+
+                    for (final Computer computer : player.getComputers(algorithm)) {
+                        computer.upgradeAlgorithm(amount);
+                        System.out.printf("Upgraded %s computer by %d%n", computer.getAlgorithm().name(), amount);
+                    }
                 }
             }
+
             default -> System.out.println("Unknown function of computer: " + function);
         }
     }
