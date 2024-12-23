@@ -11,6 +11,7 @@ import sh.miles.algidle.utils.collection.registry.Holder;
 import sh.miles.algidle.utils.collection.registry.Registry;
 import sh.miles.algidle.utils.collection.registry.RegistryKey;
 
+import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
 @NullMarked
@@ -65,6 +66,8 @@ public class ComputerCommand implements Command {
 
                     for (final Computer computer : player.getComputers(algorithm)) {
                         computer.upgradeComputer(amount);
+                        Computer.computerStatistics.incrementStatistic(RegistryKey.base("totalUpgradesPurchased"), BigDecimal.valueOf(amount));
+                        Computer.computerStatistics.incrementStatistic(RegistryKey.base("totalComputerUpgradesPurchased"), BigDecimal.valueOf(amount));
                         System.out.printf("Upgraded %s computer by %d%n", computer.getAlgorithm().name(), amount);
                     }
                 } else if (arguments[3].equals("algorithm")) {
@@ -78,7 +81,9 @@ public class ComputerCommand implements Command {
 
                     for (final Computer computer : player.getComputers(algorithm)) {
                         computer.upgradeAlgorithm(amount);
-                        System.out.printf("Upgraded %s computer by %d%n", computer.getAlgorithm().name(), amount);
+                        Computer.computerStatistics.incrementStatistic(RegistryKey.base("totalUpgradesPurchased"), BigDecimal.valueOf(amount));
+                        Computer.computerStatistics.incrementStatistic(RegistryKey.base("totalAlgorithmUpgradesPurchased"), BigDecimal.valueOf(amount));
+                        System.out.printf("Upgraded %s algorithm by %d%n", computer.getAlgorithm().name(), amount);
                     }
                 }
             }

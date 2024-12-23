@@ -4,11 +4,15 @@ import org.jspecify.annotations.NullMarked;
 import sh.miles.algidle.entity.Player;
 import sh.miles.algidle.utils.Ticking;
 import sh.miles.algidle.utils.TimeUtils;
+import sh.miles.algidle.utils.collection.registry.RegistryKey;
 import sh.miles.algidle.utils.math.BigMath;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Algorithm Algorithm constant Algorithm level Algorithm Time Takes // refresh this every time an upgrade is applied to
@@ -24,11 +28,14 @@ public class Computer implements Ticking {
     private int computerLevel;
     private int processTime; // ticks
     private BigO timeComplexity;
-
     private int ticked = 0;
     private int counter = 0;
     private double temp = 0;
     private double timeElapsed = 0;
+    private UUID uuid = UUID.randomUUID();
+
+    public static final Map<RegistryKey, BigDecimal> computerStats = new HashMap<>();
+    public static Statistics computerStatistics = new Statistics(computerStats);
 
     public Computer(final Algorithm algorithm, final Player owner) {
         this.algorithm = algorithm;
@@ -65,7 +72,7 @@ public class Computer implements Ticking {
         return cost.divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
     }
     // change the power of 10^x, dependent on the type of algorithm
-    private BigDecimal amountBalanceIncrease(BigO timeFunction, Algorithm algorithm, BigDecimal algorithmLevel, int computerLevel) {
+    private static BigDecimal amountBalanceIncrease(BigO timeFunction, Algorithm algorithm, BigDecimal algorithmLevel, int computerLevel) {
         return timeFunction.operate(algorithmLevel).multiply(BigDecimal.valueOf(algorithm.algorithmMult())).multiply(BigDecimal.valueOf(computerLevel)).divide(BigDecimal.valueOf(100), 4, RoundingMode.HALF_UP);
     }
 
@@ -76,8 +83,13 @@ public class Computer implements Ticking {
         if (ticked % processTime != 0) {
             return;
         }
-        counter += 1;
+
         this.owner.incrementBalance(amountBalanceIncrease(getTimeComplexity(), getAlgorithm(), getAlgorithmLevel(), getComputerLevel()).doubleValue());
+        computerStatistics.incrementStatistic(RegistryKey.base("totalProfit"), BigDecimal.valueOf(amountBalanceIncrease(getTimeComplexity(), getAlgorithm(), getAlgorithmLevel(), getComputerLevel()).doubleValue()));
+        computerStatistics.incrementStatistic(RegistryKey.base("totalProfit" + this.getAlgorithm()), BigDecimal.valueOf(amountBalanceIncrease(this.getTimeComplexity(), this.getAlgorithm(), this.getAlgorithmLevel(), this.getComputerLevel()).doubleValue()));
+        computerStatistics.incrementStatistic(RegistryKey.base("totalProfit" + uuid), BigDecimal.valueOf(amountBalanceIncrease(this.getTimeComplexity(), this.getAlgorithm(), this.getAlgorithmLevel(), this.getComputerLevel()).doubleValue()));
+        /*
+        counter += 1;
         temp += amountBalanceIncrease(getTimeComplexity(), getAlgorithm(), getAlgorithmLevel(), getComputerLevel()).doubleValue();
         timeElapsed += TimeUtils.ticksToSeconds(this.processTime).doubleValue();
         ticked = 0;
@@ -89,6 +101,7 @@ public class Computer implements Ticking {
         counter = 0;
         temp = 0;
         timeElapsed = 0;
+         */
     }
 
     public Player getOwner() {
@@ -104,6 +117,8 @@ public class Computer implements Ticking {
     public int getComputerLevel() { return computerLevel;}
 
     public BigDecimal getAlgorithmLevel() { return algorithmLevel;}
+
+    public UUID getUuid() { return uuid;}
 
     @Override
     public boolean equals(final Object o) {

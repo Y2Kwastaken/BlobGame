@@ -1,9 +1,6 @@
 package sh.miles.algidle.command;
 
-import sh.miles.algidle.command.impl.ComputerCommand;
-import sh.miles.algidle.command.impl.PlayerCommand;
-import sh.miles.algidle.command.impl.StopCommand;
-import sh.miles.algidle.command.impl.TPSCommand;
+import sh.miles.algidle.command.impl.*;
 import sh.miles.algidle.entity.Player;
 
 import java.util.HashMap;
@@ -20,6 +17,7 @@ public class CommandRegistrar {
         commands.put("computer", new ComputerCommand());
         commands.put("player", new PlayerCommand());
         commands.put("tps", new TPSCommand());
+        commands.put("stats", new StatsCommand());
     }
 
     public void register(String name, Command command) {
