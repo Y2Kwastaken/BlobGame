@@ -4,11 +4,21 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import sh.miles.algidle.MainGraphicalInterface;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import org.jspecify.annotations.NullMarked;
+import sh.miles.algidle.MainGraphics;
 
-public class MainMenuScreen implements Screen {
+@NullMarked
+public class GameplayScreen implements Screen {
 
-    private final SpriteBatch batch = MainGraphicalInterface.BATCH;
+    private final MainGraphics game;
+    private final SpriteBatch batch;
+    private final Viewport viewport;
+    public GameplayScreen(final MainGraphics game) {
+        this.game = game;
+        this.batch = game.getBatch();
+        this.viewport = game.getViewport();
+    }
 
     @Override
     public void show() {
@@ -17,7 +27,9 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void render(final float delta) {
+        viewport.apply();
         ScreenUtils.clear(Color.BLACK);
+        batch.setProjectionMatrix(viewport.getCamera().combined);
     }
 
     @Override
