@@ -13,10 +13,10 @@ public record Algorithm(String name, BigO minComplexity, BigO maxComplexity, Alg
 
     @FunctionalInterface
     public interface AlgorithmRuntime {
-        AlgorithmRuntime BASE = (BigDecimal upgradeValue, int constant, BigO timeFunction) -> {
-            return BigDecimal.valueOf(Math.pow(Math.E, timeFunction.operate(BigDecimal.valueOf(constant)).subtract(upgradeValue).doubleValue())).add(BigDecimal.TWO);
+        AlgorithmRuntime BASE = (BigDecimal algorithmUpgradeValue, int constant, BigO timeFunction) -> {
+            return BigDecimal.valueOf(Math.pow(Math.E, timeFunction.operate(BigDecimal.valueOf(constant)).subtract(algorithmUpgradeValue).doubleValue())).add(BigDecimal.TWO);
         };
 
-        BigDecimal compute(BigDecimal upgradeValue, int constant, BigO timeFunction);
+        BigDecimal compute(BigDecimal algorithmUpgradeValue, int constant, BigO timeFunction);
     }
 }
