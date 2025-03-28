@@ -165,4 +165,6 @@ Thumbs.db
 **/resource-config.json
 
 graphics/build/
-*build/
+buildSrc/build/
+headless/build/
+lwjgl3/build/
