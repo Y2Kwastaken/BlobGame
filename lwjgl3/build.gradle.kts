@@ -14,7 +14,7 @@ if (properties["enableGraalNative"] == "true") apply(libs.plugins.graalvm)
 sourceSets.main {
     resources.srcDir(rootProject.file("assets"))
 }
-val mainClassName = "sh.miles.algidle.lwjgl3.Lwjgl3Launcher"
+val mainClassName = "sh.miles.blobs.lwjgl3.Lwjgl3Launcher"
 application.mainClass.set(mainClassName)
 
 dependencies {
@@ -85,14 +85,14 @@ construo {
         create("macM1", Target.MacOs::class) {
             architecture.set(io.github.fourlastor.construo.Target.Architecture.AARCH64)
             jdkUrl.set("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.12_7.tar.gz")
-            identifier.set("sh.miles.algidle.AlgorithmIdle")
+            identifier.set("sh.miles.blobs.AlgorithmIdle")
             macIcon.set(project.file("icons/logo.icns"))
         }
 
         create("macX64", Target.MacOs::class) {
             architecture.set(Target.Architecture.X86_64)
             jdkUrl.set("https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.12%2B7/OpenJDK17U-jdk_x64_mac_hotspot_17.0.12_7.tar.gz")
-            identifier.set("sh.miles.algidle.AlgorithmIdle")
+            identifier.set("sh.miles.blobs.AlgorithmIdle")
             macIcon.set(project.file("icons/logo.icns"))
         }
 

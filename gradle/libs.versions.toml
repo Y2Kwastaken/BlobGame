@@ -1,7 +1,7 @@
 [versions]
 jspecify-version = "1.0.0"
 guava-version = "33.4.0-jre"
-libgdx-version = "1.13.0"
+libgdx-version = "1.13.1"
 graalvm-helper-version = "2.0.1"
 graalvm-buildtools-plugin-version = "0.10.4"
 construo-plugin-version = "1.5.1"

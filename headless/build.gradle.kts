@@ -6,4 +6,5 @@ plugins {
 dependencies {
     api(libs.guava)
     api(libs.jspecify)
+    api(libs.libgdx.api)
 }
