@@ -1,6 +1,6 @@
-rootProject.name = "AlgorithmIdle"
+rootProject.name = "Blobs"
 gradle.rootProject {
-    group = "sh.miles.algidle"
+    group = "sh.miles.blobs"
     version = "1.0.0-SNAPSHOT"
 }
 

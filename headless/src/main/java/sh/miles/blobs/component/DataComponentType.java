@@ -3,7 +3,7 @@ package sh.miles.blobs.component;
 import java.util.Objects;
 
 /**
- * Represents a type of {@link DataComponent}
+ * Represents a type of component
  *
  * @param <T> the component type
  */

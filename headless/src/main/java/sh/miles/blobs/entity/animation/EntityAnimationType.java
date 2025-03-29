@@ -11,30 +11,26 @@ public enum EntityAnimationType {
     WALK_SOUTH(1),
     WALK_EAST(1),
     WALK_WEST(1),
+    ATTACK_NORTH(2),
+    ATTACK_SOUTH(2),
+    ATTACK_EAST(2),
+    ATTACK_WEST(2),
+    DIE_NORTH(3),
+    DIE_SOUTH(3),
+    DIE_EAST(3),
+    DIE_WEST(3),
     ;
 //    DEATH,
 //    WEAPON_ATTACK;
 
     public static final int IDLE = 0;
     public static final int WALK = 1;
+    public static final int ATTACK = 2;
 
     public final int type;
 
     EntityAnimationType(int type) {
         this.type = type;
-    }
-
-    public static EntityAnimationType transitionTo(int type, EntityAnimationType current) {
-        if (type == current.ordinal()) return current;
-        final int ordinal = current.ordinal();
-        int next;
-        if (type > ordinal) {
-            next = ordinal - (type * 4);
-        } else {
-            next = ordinal + (type * 4);
-        }
-
-        return values()[next];
     }
 
     public static EntityAnimationType from(int type, Vector2 vec) {

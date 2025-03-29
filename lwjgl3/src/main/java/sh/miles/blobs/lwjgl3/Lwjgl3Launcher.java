@@ -3,7 +3,6 @@ package sh.miles.blobs.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import sh.miles.blobs.client.BlobsRender;
-import sh.miles.game.MainGraphics;
 
 /**
  * Launches the desktop (LWJGL3) application.

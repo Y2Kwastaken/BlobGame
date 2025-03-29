@@ -10,7 +10,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import sh.miles.blobs.BlobsGame;
 import sh.miles.blobs.GameRunner;
 import sh.miles.blobs.client.atlas.BlobsTextures;
-import sh.miles.blobs.client.atlas.TextureAtlas;
 import sh.miles.blobs.client.entity.animation.EntityAnimationSystem;
 import sh.miles.blobs.client.render.Renders;
 
@@ -43,7 +42,8 @@ public class BlobsRender extends ApplicationAdapter {
 
         this.input = new MockInput();
         this.runner.start();
-        this.runner.game.entities.add(input.entity);
+        this.runner.game.entities.add(input.player);
+        this.runner.game.entities.add(input.enemy);
 
         Gdx.input.setInputProcessor(input);
     }
@@ -55,7 +55,7 @@ public class BlobsRender extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(255, 255, 255, 1);
+        Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();

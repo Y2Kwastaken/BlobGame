@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.IntMap;
 import sh.miles.blobs.client.atlas.BlobsTextures;
 import sh.miles.blobs.client.atlas.animation.AtlasAnimation;
 import sh.miles.blobs.entity.Entity;
+import sh.miles.blobs.entity.EntityType;
 import sh.miles.blobs.entity.animation.EntityAnimationType;
 import sh.miles.blobs.entity.components.EntityComponents;
 
@@ -43,6 +44,9 @@ public final class EntityAnimationSystem {
 
             current.stateTime += Gdx.graphics.getDeltaTime();
             current.stateTime %= current.animation.getLength();
+            if (current.stateTime == 0) {
+                progress.remove(id);
+            }
         }
     }
 

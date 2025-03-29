@@ -26,6 +26,15 @@ public final class BlobsGame implements Ticking {
 
     @Override
     public void tick() {
+        final var iterator = entities.iterator();
+        while (iterator.hasNext()) {
+            final var entity = iterator.next();
+            entity.tick();
+            final var dispose = entity.get(EntityComponents.DISPOSE);
+            if (dispose != null && dispose.dispose()) {
+                iterator.remove();
+            }
+        }
         for (final Entity entity : entities) {
             entity.tick();
         }

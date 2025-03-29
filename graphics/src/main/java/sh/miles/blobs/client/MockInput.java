@@ -1,20 +1,21 @@
 package sh.miles.blobs.client;
 
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.IntSet;
-import sh.miles.blobs.client.atlas.BlobsTextures;
-import sh.miles.blobs.component.DataComponentType;
 import sh.miles.blobs.entity.Entity;
 import sh.miles.blobs.entity.EntityType;
 import sh.miles.blobs.entity.animation.EntityAnimationType;
+import sh.miles.blobs.entity.components.AttackComponent;
 import sh.miles.blobs.entity.components.EntityComponents;
+import sh.miles.blobs.entity.components.HealthComponent;
+import sh.miles.blobs.entity.components.MovementComponent;
+import sh.miles.blobs.entity.components.PositionComponent;
 
 import static com.badlogic.gdx.Input.Keys.A;
 import static com.badlogic.gdx.Input.Keys.D;
 import static com.badlogic.gdx.Input.Keys.S;
-import static com.badlogic.gdx.Input.Keys.V;
+import static com.badlogic.gdx.Input.Keys.SPACE;
 import static com.badlogic.gdx.Input.Keys.W;
 
 public class MockInput implements InputProcessor {
@@ -22,13 +23,28 @@ public class MockInput implements InputProcessor {
     private final IntSet keyDown = new IntSet();
     public int region = 0;
 
-    public Entity entity = new Entity()
+    public Entity player = new Entity()
             .set(EntityComponents.ENTITY_TYPE, EntityType.HUMAN)
-            .set(EntityComponents.POSITION, new Vector2(BlobsRender.GAME_WIDTH / 2, BlobsRender.GAME_HEIGHT / 2))
-            .set(EntityComponents.VELOCITY, Vector2.Zero)
-            .set(EntityComponents.LAST_VELOCITY, Vector2.Zero)
-            .set(EntityComponents.MOVEMENT_SPEED, 1F)
+            .set(EntityComponents.POSITION, new PositionComponent(BlobsRender.GAME_WIDTH / 2, (float) (BlobsRender.GAME_HEIGHT / 1.75)))
+            .set(EntityComponents.MOVEMENT, new MovementComponent(
+                    Vector2.Zero.cpy(),
+                    Vector2.Zero.cpy(),
+                    1F
+            ))
+            .set(EntityComponents.HEALTH, new HealthComponent(10.0F, 10.0F))
+            .set(EntityComponents.ATTACK, new AttackComponent(1.0F, 35.0F, 35, -1, false))
             .set(EntityComponents.ANIMATION, EntityAnimationType.IDLE_SOUTH);
+    public Entity enemy = new Entity()
+            .set(EntityComponents.ENTITY_TYPE, EntityType.SLIME)
+            .set(EntityComponents.POSITION, new PositionComponent((float) (BlobsRender.GAME_WIDTH / 1.75), (float) (BlobsRender.GAME_HEIGHT / 2)))
+            .set(EntityComponents.MOVEMENT, new MovementComponent(
+                    Vector2.Zero.cpy(),
+                    Vector2.Zero.cpy(),
+                    1F
+            ))
+            .set(EntityComponents.HEALTH, new HealthComponent(1.0F, 1.0F))
+            .set(EntityComponents.ANIMATION, EntityAnimationType.IDLE_EAST)
+            .set(EntityComponents.ATTACK, new AttackComponent(5.0F, 35.0F, 120, -1, false));
 
     public void tick() {
         final var iter = keyDown.iterator();
@@ -39,19 +55,9 @@ public class MockInput implements InputProcessor {
 
     @Override
     public boolean keyDown(final int keycode) {
-        if (keycode == Input.Keys.N) {
-            var values = EntityAnimationType.values();
-            int next = entity.get(EntityComponents.ANIMATION).ordinal() + 1;
-            if (next >= values.length) {
-                next = 0;
-            }
-
-            entity.set(EntityComponents.ANIMATION, values[next]);
-            return true;
-        }
-
         keyDown.add(keycode);
-        final var vec = entity.get(EntityComponents.VELOCITY).cpy();
+        final var movement = enemy.get(EntityComponents.MOVEMENT).builder();
+        final var vec = movement.velocity;
         if (keycode == W) {
             vec.y = 1F;
         } else if (keycode == A) {
@@ -60,9 +66,15 @@ public class MockInput implements InputProcessor {
             vec.y = -1F;
         } else if (keycode == D) {
             vec.x = 1F;
+        } else if (keycode == SPACE) {
+            final var attack = enemy.get(EntityComponents.ATTACK);
+            if (attack != null) {
+                enemy.set(EntityComponents.ATTACK, attack.withIsAttacking(true));
+            }
+            keyDown.remove(keycode);
+            return true;
         }
-        entity.set(EntityComponents.VELOCITY, vec);
-
+        enemy.set(EntityComponents.MOVEMENT, movement.build());
         return true;
     }
 

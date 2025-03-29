@@ -14,13 +14,14 @@ public final class Renders {
     }
 
     public static void entities(SpriteBatch batch, List<Entity> entities) {
-        for (final Entity entity : entities) {
+        final var iterator = entities.iterator();
+        while (iterator.hasNext()) {
+            final var entity = iterator.next();
             var position = entity.get(EntityComponents.POSITION);
-            var animation = entity.get(EntityComponents.ANIMATION);
-            if (position != null && animation != null) {
+            if (position != null) {
                 TextureRegion region = EntityAnimationSystem.getCurrentFrameFor(entity.id);
                 if (region != null) {
-                    batch.draw(region, position.x, position.y);
+                    batch.draw(region, position.x(), position.y());
                 }
             }
         }

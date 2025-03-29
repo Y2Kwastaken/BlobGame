@@ -8,6 +8,7 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import sh.miles.blobs.client.atlas.animation.AtlasAnimation;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -17,13 +18,13 @@ public class TextureAtlas {
 
     private final Texture texture;
     private final TextureAtlasData atlasData;
-    private final Array<TextureRegion> regions;
+    private final ArrayList<TextureRegion> regions;
     private final Map<Object, AtlasAnimation> animations;
 
     public TextureAtlas(String path, TextureAtlasData atlasData) {
         this.texture = new Texture(Gdx.files.internal(path));
         this.atlasData = atlasData;
-        this.regions = new Array<>();
+        this.regions = new ArrayList<>();
         this.animations = new HashMap<>(5);
         for (int y = 0; y < atlasData.fileHeight(); y += atlasData.height()) {
             for (int x = 0; x < atlasData.fileWidth(); x += atlasData.width()) {
@@ -34,12 +35,10 @@ public class TextureAtlas {
 
     public TextureAtlas modify(int insert, int row, Consumer<TextureRegion> mod) {
         int y = row * atlasData.height();
-        int width = 0;
         for (int x = 0; x < atlasData.fileWidth(); x += atlasData.width()) {
             final var region = new TextureRegion(texture, x, y, atlasData.width(), atlasData.height());
             mod.accept(region);
-            regions.insert(insert, region);
-            width++;
+            regions.add(insert + (x / atlasData.width()), region);
         }
 
         return this;
@@ -61,7 +60,7 @@ public class TextureAtlas {
     }
 
     public int getRegionAmount() {
-        return this.regions.size;
+        return this.regions.size();
     }
 
     public void dispose() {
