@@ -4,48 +4,30 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import sh.miles.blobs.BlobsGame;
-import sh.miles.blobs.GameRunner;
-import sh.miles.blobs.client.atlas.BlobsTextures;
-import sh.miles.blobs.client.entity.animation.EntityAnimationSystem;
-import sh.miles.blobs.client.render.Renders;
 
 public class BlobsRender extends ApplicationAdapter {
-    public static float GAME_WIDTH = 500;
-    public static float GAME_HEIGHT = 500;
+    public static float GAME_WIDTH = 800;
+    public static float GAME_HEIGHT = 600;
 
-    private GameRunner runner;
-    private MockInput input;
-    private BlobsGame game;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Viewport viewport;
+    private Texture texture;
 
     @Override
     public void create() {
-        this.runner = GameRunner.GAME;
-        this.runner.game = new BlobsGame(true, () -> {
-            Gdx.app.postRunnable(() -> {
-                this.input.tick();
-                EntityAnimationSystem.update(this.runner.game.entities);
-            });
-        });
         this.batch = new SpriteBatch();
         this.camera = new OrthographicCamera();
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
         this.viewport = new FillViewport(GAME_WIDTH * aspectRatio, GAME_HEIGHT, camera);
         this.viewport.apply();
-        camera.position.set(GAME_WIDTH / 2, GAME_HEIGHT / 2, 0);
+        camera.position.set(0, 0, 0);
 
-        this.input = new MockInput();
-        this.runner.start();
-        this.runner.game.entities.add(input.player);
-        this.runner.game.entities.add(input.enemy);
-
-        Gdx.input.setInputProcessor(input);
+        this.texture = new Texture(Gdx.files.internal("tiles/tile_grass.png"));
     }
 
     @Override
@@ -60,15 +42,12 @@ public class BlobsRender extends ApplicationAdapter {
 
         camera.update();
         batch.begin();
+        batch.draw(this.texture, 0, 0);
         batch.setProjectionMatrix(this.camera.combined);
-        Renders.entities(batch, this.runner.game.entities);
         batch.end();
     }
 
     @Override
     public void dispose() {
-        this.runner.stop();
-        BlobsTextures.CHARACTER.dispose();
-        BlobsTextures.SLIME.dispose();
     }
 }

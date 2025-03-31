@@ -1,4 +1,5 @@
-# AlgorithmIdle
+# Blobs
+Credit Assets: https://kenmi-art.itch.io/
 
 A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/libgdx/gdx-liftoff).
 
