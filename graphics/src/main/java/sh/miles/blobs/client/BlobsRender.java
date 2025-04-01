@@ -8,15 +8,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import sh.miles.blobs.client.asset.Assets;
+import sh.miles.blobs.client.level.ClientLevel;
+import sh.miles.blobs.level.TileType;
 
 public class BlobsRender extends ApplicationAdapter {
     public static float GAME_WIDTH = 800;
     public static float GAME_HEIGHT = 600;
 
     private SpriteBatch batch;
+    private ClientLevel level;
     private OrthographicCamera camera;
     private Viewport viewport;
-    private Texture texture;
 
     @Override
     public void create() {
@@ -25,9 +28,9 @@ public class BlobsRender extends ApplicationAdapter {
         float aspectRatio = (float) Gdx.graphics.getHeight() / (float) Gdx.graphics.getWidth();
         this.viewport = new FillViewport(GAME_WIDTH * aspectRatio, GAME_HEIGHT, camera);
         this.viewport.apply();
-        camera.position.set(0, 0, 0);
+        camera.position.set(GAME_WIDTH / 2, GAME_HEIGHT / 2, 0);
 
-        this.texture = new Texture(Gdx.files.internal("tiles/tile_grass.png"));
+        this.level = new ClientLevel("first", this.batch, this.camera, 1);
     }
 
     @Override
@@ -41,9 +44,9 @@ public class BlobsRender extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
-        batch.begin();
-        batch.draw(this.texture, 0, 0);
         batch.setProjectionMatrix(this.camera.combined);
+        this.level.render();
+        batch.begin();
         batch.end();
     }
 

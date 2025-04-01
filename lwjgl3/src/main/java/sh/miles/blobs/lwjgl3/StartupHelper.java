@@ -117,7 +117,7 @@ public class StartupHelper {
         jvmArgs.add("-D" + JVM_RESTARTED_ARG + "=true");
         jvmArgs.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments());
         jvmArgs.add("-cp");
-        jvmArgs.add(System.getProperty("java.class.path"));
+        jvmArgs.add(System.getProperty("java.class.rawPath"));
         String mainClass = System.getenv("JAVA_MAIN_CLASS_" + pid);
         if (mainClass == null) {
             StackTraceElement[] trace = Thread.currentThread().getStackTrace();

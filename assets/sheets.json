@@ -1,0 +1,9 @@
+[
+  {
+    "id": "tiles",
+    "path": "tiles/tiles.",
+    "sprite_size": 16,
+    "sheet_width": 48,
+    "sheet_height": 32
+  }
+]
