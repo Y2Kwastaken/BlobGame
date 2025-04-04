@@ -1,5 +1,7 @@
 package sh.miles.blobs.level;
 
+import java.util.Random;
+
 public enum TileType {
     GRASS,
     STONE,
@@ -10,5 +12,10 @@ public enum TileType {
     public static TileType id(int id) {
         if (values == null) values = values();
         return values[id];
+    }
+
+    public static TileType random(Random random) {
+        if (values == null) values = values();
+        return values[random.nextInt(0, values.length)];
     }
 }

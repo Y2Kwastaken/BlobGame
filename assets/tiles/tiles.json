@@ -19,7 +19,7 @@
     "tile_type": "water",
     "animation": {
       "type": "cycle",
-      "interval": 0.5,
+      "interval": 0.75,
       "steps": [
         {
           "x": 0,

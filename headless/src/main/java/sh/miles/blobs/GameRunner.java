@@ -6,7 +6,8 @@ public class GameRunner {
     public static final double NANO_CONSTANT = 1000000000.0;
     public static final boolean SHOW_TPS = true;
 
-    public static final GameRunner GAME = new GameRunner();
+    public static final GameRunner RUNNER = new GameRunner();
+    public static final BlobGame GAME = new BlobGame();
 
     private final Thread gameThread;
     public volatile boolean running = true;
@@ -41,7 +42,7 @@ public class GameRunner {
             delta += (now - lastTime) / ns;
             lastTime = now;
             while (delta >= 1) {
-                // tick here
+                GAME.tick();
                 ticks++;
                 delta--;
             }
