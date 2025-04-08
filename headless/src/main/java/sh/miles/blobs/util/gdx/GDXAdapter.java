@@ -1,4 +1,4 @@
-package sh.miles.blobs.util;
+package sh.miles.blobs.util.gdx;
 
 import com.badlogic.gdx.utils.Array;
 

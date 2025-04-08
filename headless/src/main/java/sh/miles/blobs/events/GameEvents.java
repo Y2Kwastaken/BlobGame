@@ -9,6 +9,8 @@ import java.util.function.Consumer;
 public final class GameEvents {
 
     public static final int SERVER_CELL_SET = 0;
+    public static final int ENTITY_SPAWN = 1;
+    public static final int ENTITY_DESPAWN = 2;
 
     private static final IntMap<List<Consumer<Object[]>>> events = new IntMap<>();
 

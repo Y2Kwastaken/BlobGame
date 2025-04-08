@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.Texture;
 public final class Textures {
 
     public static final Texture TILES = new Texture(Gdx.files.internal("tiles/tiles.png"));
+    public static final Texture HUMANOID = new Texture(Gdx.files.internal("entities/humanoid.png"));
+    public static final Texture SKELETON = new Texture(Gdx.files.internal("entities/skeleton.png"));
+    public static final Texture SLIME = new Texture(Gdx.files.internal("entities/slime.png"));
 
     private Textures() {
     }
@@ -20,6 +23,9 @@ public final class Textures {
 
     public static void dispose() {
         TILES.dispose();
+        HUMANOID.dispose();
+        SKELETON.dispose();
+        SLIME.dispose();
     }
 
 }

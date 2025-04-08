@@ -7,6 +7,8 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileSet;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import sh.miles.blobs.client.asset.Assets;
+import sh.miles.blobs.client.entity.EntityAnimationSystem;
+import sh.miles.blobs.entity.Entity;
 import sh.miles.blobs.events.GameEvents;
 import sh.miles.blobs.level.Level;
 import sh.miles.blobs.util.tile.ServerCell;
@@ -18,6 +20,8 @@ public final class LevelRenderer {
 
     private final OrthogonalTiledMapRenderer renderer;
     public int[] toRender;
+
+    private final EntityAnimationSystem entityAnimationSystem = new EntityAnimationSystem();
 
     public LevelRenderer(SpriteBatch batch, OrthographicCamera camera, float scale) {
         final TiledMap tiledMap = new TiledMap();
@@ -37,9 +41,17 @@ public final class LevelRenderer {
             final var cell = (ServerCell) objects[0];
             cell.setTile(set.getTile(cell.getId()));
         });
+        GameEvents.listen(GameEvents.ENTITY_SPAWN, (objects) -> {
+            final var entity = (Entity) objects[1];
+            this.entityAnimationSystem.spawn(entity);
+        });
+        GameEvents.listen(GameEvents.ENTITY_DESPAWN, (objects) -> {
+            final var entity = (Entity) objects[1];
+            this.entityAnimationSystem.despawn(entity);
+        });
     }
 
-    public void render() {
+    public void render(SpriteBatch batch) {
         if (this.level == null) return;
         if (!this.isSetUp) {
             this.level.addLayers(this.renderer.getMap().getLayers());
@@ -47,8 +59,8 @@ public final class LevelRenderer {
             this.isSetUp = true;
         }
 
-//        System.out.println(((ServerCell) ((TiledMapTileLayer) this.renderer.getMap().getLayers().get(0)).getCell(0, 0)).getId());
         this.renderer.render(this.toRender);
+        this.entityAnimationSystem.render(batch, this.level);
     }
 
     public void setLevel(final Level level) {

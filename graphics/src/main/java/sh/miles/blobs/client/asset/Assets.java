@@ -2,7 +2,11 @@ package sh.miles.blobs.client.asset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
+import sh.miles.blobs.client.entity.EntityAnimationType;
+import sh.miles.blobs.client.entity.EntityAnimations;
 import sh.miles.blobs.client.level.ClientTileType;
+import sh.miles.blobs.entity.EntityType;
 import sh.miles.blobs.level.TileType;
 
 import java.util.HashMap;
@@ -15,13 +19,16 @@ public final class Assets {
     private static final Json JSON = new Json();
     public static final AssetMap<String, SpriteSheet> SHEETS;
     public static final AssetMap<TileType, ClientTileType> CLIENT_TILE_TYPES;
+    public static final AssetMap<EntityType, EntityAnimations> ENTITY_ANIMATIONS;
 
     static {
         JSON.setSerializer(SpriteSheet.class, new SpriteSheet.Parser());
         SHEETS = parse("sheets.json", SpriteSheet[].class, SpriteSheet::id);
         final var sheet = SHEETS.get("tiles");
         JSON.setSerializer(ClientTileType.class, new ClientTileType.Parser(sheet));
+        JSON.setSerializer(EntityAnimations.class, new EntityAnimations.Parser(SHEETS));
         CLIENT_TILE_TYPES = parse(sheet.json(), ClientTileType[].class, ClientTileType::getType);
+        ENTITY_ANIMATIONS = aggregateParse("entities/entities.json", EntityAnimations.class, EntityAnimations::getType);
     }
 
     private static void parse(String path) {
@@ -32,6 +39,17 @@ public final class Assets {
         final var result = JSON.fromJson(type, Gdx.files.internal(path));
         final var assetMap = new AssetMap<K, V>();
         for (final V value : result) {
+            assetMap.put(keyGetter.apply(value), value);
+        }
+
+        return assetMap;
+    }
+
+    private static <K, V> AssetMap<K, V> aggregateParse(String aggregate, Class<V> type, Function<V, K> keyGetter) {
+        final String[] aggregateFiles = JSON.fromJson(String[].class, Gdx.files.internal(aggregate));
+        final var assetMap = new AssetMap<K, V>();
+        for (final String file : aggregateFiles) {
+            final V value = JSON.fromJson(type, Gdx.files.internal(file));
             assetMap.put(keyGetter.apply(value), value);
         }
 

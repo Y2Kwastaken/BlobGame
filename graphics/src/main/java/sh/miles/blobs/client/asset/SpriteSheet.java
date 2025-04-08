@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import sh.miles.blobs.client.util.JsonDeserializer;
 
 public record SpriteSheet(String id, String rawPath, int width, int height, int spriteSize) {
 
@@ -23,12 +24,7 @@ public record SpriteSheet(String id, String rawPath, int width, int height, int 
         return new SpriteSheet(id, path, imageWidth / spriteWidthHeight, imageHeight / spriteWidthHeight, spriteWidthHeight);
     }
 
-    public static class Parser implements Json.Serializer<SpriteSheet> {
-        @Override
-        public void write(final Json json, final SpriteSheet object, final Class knownType) {
-            throw new IllegalArgumentException("Write Not Implemented");
-        }
-
+    public static class Parser implements JsonDeserializer<SpriteSheet> {
         @Override
         public SpriteSheet read(final Json json, final JsonValue jsonData, final Class type) {
             final var id = jsonData.get("id").asString();

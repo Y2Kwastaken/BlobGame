@@ -9,8 +9,9 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import sh.miles.blobs.client.asset.SpriteSheet;
 import sh.miles.blobs.client.asset.Textures;
+import sh.miles.blobs.client.util.JsonDeserializer;
 import sh.miles.blobs.level.TileType;
-import sh.miles.blobs.util.GDXAdapter;
+import sh.miles.blobs.util.gdx.GDXAdapter;
 
 import java.util.List;
 import java.util.function.UnaryOperator;
@@ -40,7 +41,7 @@ public final class ClientTileType {
         return new ClientTileType(type, tile, tileCopier);
     }
 
-    public static class Parser implements Json.Serializer<ClientTileType> {
+    public static class Parser implements JsonDeserializer<ClientTileType> {
 
         private static final UnaryOperator<TiledMapTile> STATIC = (toCopy) -> new StaticTiledMapTile((StaticTiledMapTile) toCopy);
         private static final UnaryOperator<TiledMapTile> ANIMATED = (toCopy) -> {
@@ -54,11 +55,6 @@ public final class ClientTileType {
         public Parser(SpriteSheet sheet) {
             this.sheet = sheet;
             this.texture = Textures.getFromId(sheet.id());
-        }
-
-        @Override
-        public void write(final Json json, final ClientTileType object, final Class knownType) {
-            throw new IllegalArgumentException("Write Not Implemented");
         }
 
         @Override
