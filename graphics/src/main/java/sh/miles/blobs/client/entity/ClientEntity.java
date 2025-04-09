@@ -46,11 +46,14 @@ public final class ClientEntity {
 
         if (this.currentAnimation != null) {
             final TextureRegion keyFrame = currentAnimation.getKeyFrame(this.stateTime);
-            batch.draw(keyFrame, position.x(), position.y(), keyFrame.getRegionWidth() / 4f, keyFrame.getRegionHeight() / 4f);
+            batch.draw(keyFrame, position.x() * 16, position.y() * 16, keyFrame.getRegionWidth(), keyFrame.getRegionHeight());
             this.stateTime += Gdx.graphics.getDeltaTime();
             this.stateTime %= this.currentAnimation.getAnimationDuration();
         }
+    }
 
+    private static float convertToUnits(float component) {
+        return component * 16;
     }
 
     private void setAnimation(EntityAnimationType animation, AnimationVariation variation) {

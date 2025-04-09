@@ -6,6 +6,7 @@ import org.jspecify.annotations.Nullable;
 import sh.miles.blobs.Constants;
 import sh.miles.blobs.entity.Entity;
 import sh.miles.blobs.events.GameEvents;
+import sh.miles.blobs.level.position.Position;
 import sh.miles.blobs.util.ArrayUtils;
 import sh.miles.blobs.util.tile.ServerCell;
 
@@ -29,7 +30,7 @@ public final class Level {
         this.height = height;
         this.currentLayer = 0;
         this.layers = new TiledMapTileLayer[layers];
-        ArrayUtils.fill(this.layers, () -> new TiledMapTileLayer(width, height, Constants.TILE_WIDTH, Constants.TILE_HEIGHT));
+        ArrayUtils.fill(this.layers, () -> new TiledMapTileLayer(width, height, Constants.TILE_SIZE, Constants.TILE_SIZE));
         this.entities = new ArrayList<>();
     }
 
@@ -66,6 +67,10 @@ public final class Level {
         for (final TiledMapTileLayer layer : this.layers) {
             layers.add(layer);
         }
+    }
+
+    public boolean isInside(Position position) {
+        return position.x() > -0.75 && position.x() < this.width && position.y() > -0.5 && position.y() < this.height;
     }
 
     public Entity getEntity(int id) {

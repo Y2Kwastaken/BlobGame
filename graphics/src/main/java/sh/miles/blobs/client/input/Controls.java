@@ -2,7 +2,6 @@ package sh.miles.blobs.client.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.IntSet;
 import sh.miles.blobs.client.BlobsRender;
 import sh.miles.blobs.entity.component.EntityComponents;
@@ -13,32 +12,10 @@ import java.util.function.Function;
 public final class Controls implements InputProcessor {
 
     private static final Map<Integer, Function<BlobsRender, Boolean>> actions = Map.of(
-            Input.Keys.LEFT, (render) -> {
-                render.getCamera().translate(-1.0f, 0.0F);
-                return true;
-            },
-            Input.Keys.RIGHT, (render) -> {
-                render.getCamera().translate(1.0f, 0.0F);
-                return true;
-            },
-            Input.Keys.UP, (render) -> {
-                render.getCamera().translate(0.0F, 1.0f);
-                return true;
-            },
-            Input.Keys.DOWN, (render) -> {
-                render.getCamera().translate(0.0F, -1.0f);
-                return true;
-            },
-            Input.Keys.HOME, (render) -> {
-                render.getCamera().position.set(BlobsRender.UNIT_WIDTH, BlobsRender.UNIT_HEIGHT * 2, 0);
-                return true;
-            },
             Input.Keys.W, (render) -> {
                 final var entity = render.getLevelRenderer().getLevel().getEntity(0);
                 entity.set(EntityComponents.VELOCITY, entity.get(EntityComponents.VELOCITY).withVelocity((v) -> {
-                    v.y = entity.get(EntityComponents.MOVEMENT_SPEED);
-                    render.getCamera().position.lerp(entity.get(EntityComponents.POSITION).toVector3(), 0.1f);
-                    render.getCamera().update();
+                    v.y = entity.get(EntityComponents.MOVEMENT_SPEED) / 10;
                     return v;
                 }));
                 return true;
@@ -46,9 +23,7 @@ public final class Controls implements InputProcessor {
             Input.Keys.S, (render) -> {
                 final var entity = render.getLevelRenderer().getLevel().getEntity(0);
                 entity.set(EntityComponents.VELOCITY, entity.get(EntityComponents.VELOCITY).withVelocity((v) -> {
-                    v.y = -entity.get(EntityComponents.MOVEMENT_SPEED);
-                    render.getCamera().position.lerp(entity.get(EntityComponents.POSITION).toVector3(), 0.1f);
-                    render.getCamera().update();
+                    v.y = -entity.get(EntityComponents.MOVEMENT_SPEED) / 10;
                     return v;
                 }));
                 return true;
@@ -56,9 +31,7 @@ public final class Controls implements InputProcessor {
             Input.Keys.A, (render) -> {
                 final var entity = render.getLevelRenderer().getLevel().getEntity(0);
                 entity.set(EntityComponents.VELOCITY, entity.get(EntityComponents.VELOCITY).withVelocity((v) -> {
-                    v.x = -entity.get(EntityComponents.MOVEMENT_SPEED);
-                    render.getCamera().position.lerp(entity.get(EntityComponents.POSITION).toVector3(), 0.1f);
-                    render.getCamera().update();
+                    v.x = -entity.get(EntityComponents.MOVEMENT_SPEED) / 10;
                     return v;
                 }));
                 return true;
@@ -66,9 +39,7 @@ public final class Controls implements InputProcessor {
             Input.Keys.D, (render) -> {
                 final var entity = render.getLevelRenderer().getLevel().getEntity(0);
                 entity.set(EntityComponents.VELOCITY, entity.get(EntityComponents.VELOCITY).withVelocity((v) -> {
-                    v.x = entity.get(EntityComponents.MOVEMENT_SPEED);
-                    render.getCamera().position.lerp(entity.get(EntityComponents.POSITION).toVector3(), 0.1f);
-                    render.getCamera().update();
+                    v.x = entity.get(EntityComponents.MOVEMENT_SPEED) / 10;
                     return v;
                 }));
                 return true;

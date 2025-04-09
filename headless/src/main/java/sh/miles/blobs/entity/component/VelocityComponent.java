@@ -21,6 +21,8 @@ public record VelocityComponent(DeepVector2 velocity, float friction, VelocityDe
     }
 
     public static void update(Entity entity) {
+        final var level = entity.get(EntityComponents.LEVEL);
+        if (level == null) return;
         final var position = entity.get(EntityComponents.POSITION);
         if (position == null) return;
         final var velocity = entity.get(EntityComponents.VELOCITY);
@@ -28,10 +30,13 @@ public record VelocityComponent(DeepVector2 velocity, float friction, VelocityDe
 
         final var vector = velocity.velocity.vector();
         if (Math.abs(vector.x) > 0 && Math.abs(vector.y) > 0) {
-            vector.scl((float) (1f / Math.sqrt(2f)));  // Normalize the vector to make diagonal movement the same speed
+            vector.scl((float) (1f / Math.sqrt(2f)));
         }
 
-        entity.set(EntityComponents.POSITION, position.apply(vector));
+        final var newPosition = position.apply(vector);
+        if (!level.isInside(newPosition)) return;
+
+        entity.set(EntityComponents.POSITION, newPosition);
         entity.set(EntityComponents.VELOCITY, velocity.degrade.degrade(velocity));
     }
 
