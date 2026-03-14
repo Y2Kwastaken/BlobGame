@@ -1,24 +1,28 @@
 package sh.miles.blobs.entity.component;
 
-import sh.miles.blobs.entity.Entity;
+import sh.miles.blobs.common.attribute.Copyable;
 
-public record CombatComponent(float damage, boolean attacking) {
+public class CombatComponent implements Copyable<CombatComponent> {
+    public float attackDamage;
+    public float attackRange;
+    public float attackDuration;
+    public float attackTimeLeft;
+    public int attackCooldown;
+    public int attackCooldownTicksLeft;
+    public boolean willStartAttack;
 
-    public CombatComponent withAttacking(boolean attacking) {
-        return new CombatComponent(this.damage, attacking);
+    public CombatComponent(final float attackDamage, final float attackRange, final float attackDuration, final float attackTimeLeft, final int attackCooldown, final int attackCooldownTicksLeft, final boolean willStartAttack) {
+        this.attackDamage = attackDamage;
+        this.attackRange = attackRange;
+        this.attackDuration = attackDuration;
+        this.attackTimeLeft = attackTimeLeft;
+        this.attackCooldown = attackCooldown;
+        this.attackCooldownTicksLeft = attackCooldownTicksLeft;
+        this.willStartAttack = willStartAttack;
     }
 
-    public CombatComponent withDamage(float damage) {
-        return new CombatComponent(damage, this.attacking);
-    }
-
-    public static void update(Entity entity) {
-        final var combat = entity.get(EntityComponents.COMBAT);
-        if (combat == null) return;
-        final var position = entity.get(EntityComponents.POSITION);
-        if (position == null) return;
-        final var level = entity.get(EntityComponents.LEVEL);
-        if (level == null) return;
-
+    @Override
+    public CombatComponent copy() {
+        return new CombatComponent(this.attackDamage, this.attackRange, this.attackDuration, this.attackTimeLeft, this.attackCooldown, this.attackCooldownTicksLeft, this.willStartAttack);
     }
 }

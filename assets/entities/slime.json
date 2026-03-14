@@ -3,6 +3,7 @@
   "animation": [
     {
       "animation_type": "idle",
+      "playmode": "LOOP",
       "variations": [
         {
           "variation_type": "south",
@@ -80,6 +81,7 @@
     },
     {
       "animation_type": "walk",
+      "playmode": "LOOP",
       "variations": [
         {
           "variation_type": "south",
@@ -173,6 +175,144 @@
               {
                 "x": 5,
                 "y": 1
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "animation_type": "attack",
+      "playmode": "LOOP_PINGPONG",
+      "variations": [
+        {
+          "variation_type": "south",
+          "animation": {
+            "interval": 0.1,
+            "steps": [
+              {
+                "x": 1,
+                "y": 2
+              },
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 2
+              },
+              {
+                "x": 4,
+                "y": 2
+              },
+              {
+                "x": 5,
+                "y": 2
+              },
+              {
+                "x": 4,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 2
+              },
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 1,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "variation_type": "side",
+          "animation": {
+            "interval": 0.1,
+            "steps": [
+              {
+                "x": 1,
+                "y": 2
+              },
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 2
+              },
+              {
+                "x": 4,
+                "y": 2
+              },
+              {
+                "x": 5,
+                "y": 2
+              },
+              {
+                "x": 4,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 2
+              },
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 1,
+                "y": 2
+              }
+            ]
+          }
+        },
+        {
+          "variation_type": "north",
+          "animation": {
+            "interval": 0.1,
+            "steps": [
+              {
+                "x": 1,
+                "y": 2
+              },
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 2
+              },
+              {
+                "x": 4,
+                "y": 2
+              },
+              {
+                "x": 5,
+                "y": 2
+              },
+              {
+                "x": 4,
+                "y": 2
+              },
+              {
+                "x": 3,
+                "y": 2
+              },
+              {
+                "x": 2,
+                "y": 2
+              },
+              {
+                "x": 1,
+                "y": 2
               }
             ]
           }

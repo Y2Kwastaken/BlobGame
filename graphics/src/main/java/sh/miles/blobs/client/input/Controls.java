@@ -1,116 +1,103 @@
 package sh.miles.blobs.client.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.utils.IntSet;
-import sh.miles.blobs.client.BlobsRender;
-import sh.miles.blobs.entity.component.EntityComponents;
-
-import java.util.Map;
-import java.util.function.Function;
+import sh.miles.blobs.api.dto.client.ClientDebugDTO;
+import sh.miles.blobs.api.dto.client.ClientEntityDTO;
+import sh.miles.blobs.api.event.ClientEvents;
+import sh.miles.blobs.api.event.GameEvents;
+import sh.miles.blobs.client.GameRender;
 
 public final class Controls implements InputProcessor {
 
-    private static final Map<Integer, Function<BlobsRender, Boolean>> actions = Map.of(
-            Input.Keys.W, (render) -> {
-                final var entity = render.getLevelRenderer().getLevel().getEntity(0);
-                entity.set(EntityComponents.VELOCITY, entity.get(EntityComponents.VELOCITY).withVelocity((v) -> {
-                    v.y = entity.get(EntityComponents.MOVEMENT_SPEED) / 10;
-                    return v;
-                }));
-                return true;
-            },
-            Input.Keys.S, (render) -> {
-                final var entity = render.getLevelRenderer().getLevel().getEntity(0);
-                entity.set(EntityComponents.VELOCITY, entity.get(EntityComponents.VELOCITY).withVelocity((v) -> {
-                    v.y = -entity.get(EntityComponents.MOVEMENT_SPEED) / 10;
-                    return v;
-                }));
-                return true;
-            },
-            Input.Keys.A, (render) -> {
-                final var entity = render.getLevelRenderer().getLevel().getEntity(0);
-                entity.set(EntityComponents.VELOCITY, entity.get(EntityComponents.VELOCITY).withVelocity((v) -> {
-                    v.x = -entity.get(EntityComponents.MOVEMENT_SPEED) / 10;
-                    return v;
-                }));
-                return true;
-            },
-            Input.Keys.D, (render) -> {
-                final var entity = render.getLevelRenderer().getLevel().getEntity(0);
-                entity.set(EntityComponents.VELOCITY, entity.get(EntityComponents.VELOCITY).withVelocity((v) -> {
-                    v.x = entity.get(EntityComponents.MOVEMENT_SPEED) / 10;
-                    return v;
-                }));
-                return true;
-            }
-    );
+    public int playerId = 0;
 
-
-    private final BlobsRender render;
-    private final IntSet keyDown;
-
-    public Controls(BlobsRender render) {
-        this.render = render;
-        this.keyDown = new IntSet();
+    public Controls() {
     }
 
+    /**
+     * Called every frontend render frame (or pre-tick hook). Gathers raw input and ships it to the backend.
+     */
     public void tickInput() {
-        final var iter = this.keyDown.iterator();
-        while (iter.hasNext) {
-            keyDown(iter.next());
+        float moveX = 0;
+        float moveY = 0;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) moveY += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) moveY -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) moveX -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) moveX += 1;
+
+        float length = (float) Math.sqrt(moveX * moveX + moveY * moveY);
+        if (length > 0) {
+            moveX /= length;
+            moveY /= length;
+        }
+
+        boolean attack = Gdx.input.isKeyJustPressed(Input.Keys.SPACE);
+
+        GameEvents.call(ClientEvents.PLAYER_INPUT, new ClientEntityDTO.EntityInputDTO(playerId, moveX, moveY, attack));
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_7)) {
+            GameRender.RDSET.showHitboxes.flip();
+            GameRender.RDSET.showAttackSwing.flip();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_4)) {
+            GameRender.RDSET.showLocation.flip();
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_8)) {
+            GameEvents.call(ClientEvents.PLAYER_DEBUG, new ClientDebugDTO.PlayerDebugDTO(playerId, true, false));
+        }
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUMPAD_9)) {
+            GameEvents.call(ClientEvents.PLAYER_DEBUG, new ClientDebugDTO.PlayerDebugDTO(playerId, false, true));
         }
     }
 
     @Override
-    public boolean keyDown(final int keycode) {
-        keyDown.add(keycode);
-        final var action = actions.get(keycode);
-        if (action != null) {
-            action.apply(this.render);
-            return true;
-        }
+    public boolean keyDown(int keycode) {
         return false;
     }
 
     @Override
-    public boolean keyUp(final int keycode) {
-        keyDown.remove(keycode);
+    public boolean keyUp(int keycode) {
         return false;
     }
 
     @Override
-    public boolean keyTyped(final char character) {
+    public boolean keyTyped(char character) {
         return false;
     }
 
     @Override
-    public boolean touchDown(final int screenX, final int screenY, final int pointer, final int button) {
+    public boolean touchDown(int x, int y, int pointer, int button) {
         return false;
     }
 
     @Override
-    public boolean touchUp(final int screenX, final int screenY, final int pointer, final int button) {
+    public boolean touchUp(int x, int y, int pointer, int button) {
         return false;
     }
 
     @Override
-    public boolean touchCancelled(final int screenX, final int screenY, final int pointer, final int button) {
+    public boolean touchCancelled(int x, int y, int pointer, int button) {
         return false;
     }
 
     @Override
-    public boolean touchDragged(final int screenX, final int screenY, final int pointer) {
+    public boolean touchDragged(int x, int y, int pointer) {
         return false;
     }
 
     @Override
-    public boolean mouseMoved(final int screenX, final int screenY) {
+    public boolean mouseMoved(int x, int y) {
         return false;
     }
 
     @Override
-    public boolean scrolled(final float amountX, final float amountY) {
+    public boolean scrolled(float amountX, float amountY) {
         return false;
     }
 }

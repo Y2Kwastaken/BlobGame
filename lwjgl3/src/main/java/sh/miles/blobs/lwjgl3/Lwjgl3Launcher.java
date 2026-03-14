@@ -2,7 +2,7 @@ package sh.miles.blobs.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import sh.miles.blobs.client.BlobsRender;
+import sh.miles.blobs.client.GameRender;
 
 /**
  * Launches the desktop (LWJGL3) application.
@@ -14,7 +14,7 @@ public class Lwjgl3Launcher {
     }
 
     private static Lwjgl3Application createApplication() {
-        return new Lwjgl3Application(new BlobsRender(), getDefaultConfiguration());
+        return new Lwjgl3Application(new GameRender(), getDefaultConfiguration());
     }
 
     private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

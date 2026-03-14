@@ -5,6 +5,7 @@ gradle.rootProject {
 }
 
 include(
+    "common",
     "graphics",
     "headless",
     "lwjgl3",

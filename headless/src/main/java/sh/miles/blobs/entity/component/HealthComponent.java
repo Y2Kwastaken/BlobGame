@@ -1,13 +1,23 @@
 package sh.miles.blobs.entity.component;
 
-public record HealthComponent(float maxHealth, float health) {
+import sh.miles.blobs.common.attribute.Copyable;
 
-    public HealthComponent withMaxHealth(float maxHealth) {
-        return new HealthComponent(maxHealth, this.health);
+public class HealthComponent implements Copyable<HealthComponent> {
+    public float maxHealth;
+    public float health;
+
+    public HealthComponent(float maxHealth, float health) {
+        this.maxHealth = maxHealth;
+        this.health = health;
     }
 
-    public HealthComponent withHealth(float health) {
-        return new HealthComponent(this.maxHealth, health);
+    public HealthComponent(float maxHealth) {
+        this.maxHealth = maxHealth;
+        this.health = maxHealth;
     }
 
+    @Override
+    public HealthComponent copy() {
+        return new HealthComponent(this.maxHealth, this.health);
+    }
 }

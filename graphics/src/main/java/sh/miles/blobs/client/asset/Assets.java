@@ -2,12 +2,10 @@ package sh.miles.blobs.client.asset;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
-import sh.miles.blobs.client.entity.EntityAnimationType;
-import sh.miles.blobs.client.entity.EntityAnimations;
-import sh.miles.blobs.client.level.ClientTileType;
-import sh.miles.blobs.entity.EntityType;
-import sh.miles.blobs.level.TileType;
+import sh.miles.blobs.client.asset.entity.EntityAnimations;
+import sh.miles.blobs.client.asset.level.ClientTileType;
+import sh.miles.blobs.api.entity.EntityType;
+import sh.miles.blobs.api.level.TileType;
 
 import java.util.HashMap;
 import java.util.Map;

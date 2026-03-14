@@ -3,6 +3,7 @@
   "animation": [
     {
       "animation_type": "idle",
+      "playmode": "LOOP_PINGPONG",
       "variations": [
         {
           "variation_type": "south",
@@ -104,6 +105,7 @@
     },
     {
       "animation_type": "walk",
+      "playmode": "LOOP_PINGPONG",
       "variations": [
         {
           "variation_type": "south",
@@ -197,6 +199,84 @@
               {
                 "x": 5,
                 "y": 5
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "animation_type": "attack",
+      "playmode": "LOOP_REVERSED",
+      "variations": [
+        {
+          "variation_type": "south",
+          "animation": {
+            "interval": 0.125,
+            "steps": [
+              {
+                "x": 0,
+                "y": 6
+              },
+              {
+                "x": 1,
+                "y": 6
+              },
+              {
+                "x": 2,
+                "y": 6
+              },
+              {
+                "x": 3,
+                "y": 6
+              }
+            ]
+          }
+        },
+        {
+          "variation_type": "side",
+          "animation": {
+            "interval": 0.125,
+            "steps": [
+              {
+                "x": 0,
+                "y": 7
+              },
+              {
+                "x": 1,
+                "y": 7
+              },
+              {
+                "x": 2,
+                "y": 7
+              },
+              {
+                "x": 3,
+                "y": 7
+              }
+            ]
+          }
+        },
+        {
+          "variation_type": "north",
+          "animation": {
+            "interval": 0.125,
+            "steps": [
+              {
+                "x": 0,
+                "y": 8
+              },
+              {
+                "x": 1,
+                "y": 8
+              },
+              {
+                "x": 2,
+                "y": 8
+              },
+              {
+                "x": 3,
+                "y": 8
               }
             ]
           }

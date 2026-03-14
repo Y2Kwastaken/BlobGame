@@ -7,4 +7,5 @@ dependencies {
     api(libs.guava)
     api(libs.jspecify)
     api(libs.libgdx.api)
+    api(project(":common"))
 }
